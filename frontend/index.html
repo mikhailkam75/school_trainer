@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интеллектуальный помощник</title>
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <header class="hero">
+    <div class="hero-emoji">🤖</div>
+    <h1>Интеллектуальный помощник</h1>
+    <p>Твой добрый друг для учёбы. Выбирай класс, предмет — и вперёд!</p>
+  </header>
+
+  <!-- ЭКРАН 1: настройки -->
+  <section id="screen-start" class="screen">
+    <h2>1. В каком ты классе? 🎒</h2>
+    <div class="pills" id="grade-pills">
+      <button class="pill" data-grade="2">2</button>
+      <button class="pill" data-grade="3">3</button>
+      <button class="pill" data-grade="4">4</button>
+      <button class="pill" data-grade="5">5</button>
+      <button class="pill" data-grade="6">6</button>
+    </div>
+
+    <h2>2. Какой предмет учим? 📚</h2>
+    <div class="cards" id="subject-cards">
+      <button class="card" data-subject="math"><span class="card-emoji">➗</span>Математика</button>
+      <button class="card" data-subject="russian"><span class="card-emoji">✏️</span>Русский язык</button>
+    </div>
+
+    <h2>3. Как занимаемся? 🎮</h2>
+    <div class="cards" id="mode-cards">
+      <button class="card" data-mode="quiz"><span class="card-emoji">🎯</span>Викторина<br><small>10 вопросов с вариантами</small></button>
+      <button class="card" data-mode="learn"><span class="card-emoji">💡</span>Объяснение<br><small>расскажу тему просто</small></button>
+    </div>
+
+    <div id="topic-block" hidden>
+      <h2>4. Выбери тему (или напиши свою):</h2>
+      <div class="chips" id="topic-chips"></div>
+      <input type="text" id="topic-input" placeholder="Своя тема…">
+    </div>
+
+    <button id="start-btn" class="big-btn" disabled>🚀 Начать!</button>
+    <button id="stats-btn" class="ghost-btn">📊 Мои результаты</button>
+    <div id="stats-box" hidden></div>
+  </section>
+
+  <!-- ЭКРАН 2: викторина -->
+  <section id="screen-quiz" class="screen" hidden>
+    <div class="quiz-top">
+      <span id="quiz-progress">Вопрос 1 из 10</span>
+      <span id="quiz-score">⭐ 0</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill"></div></div>
+    <div id="quiz-question" class="question-card">Придумываю вопрос…</div>
+    <div id="quiz-options" class="options"></div>
+    <div id="quiz-feedback" class="feedback" hidden></div>
+    <button id="next-btn" class="big-btn" hidden>Следующий вопрос ➡️</button>
+  </section>
+
+  <!-- ЭКРАН 3: результат -->
+  <section id="screen-result" class="screen" hidden>
+    <div class="result-card">
+      <div id="result-emoji" class="hero-emoji">🏆</div>
+      <h2 id="result-title">Молодец!</h2>
+      <p id="result-text"></p>
+      <button id="again-btn" class="big-btn">🔁 Играть ещё раз</button>
+      <button id="home-btn" class="ghost-btn">🏠 Домой</button>
+    </div>
+  </section>
+
+  <!-- ЭКРАН 4: объяснение -->
+  <section id="screen-learn" class="screen" hidden>
+    <div id="chat-log"></div>
+    <input type="text" id="user-input" placeholder="Спроси тему…">
+    <button id="send-btn" class="big-btn">Отправить 📨</button>
+    <button id="learn-home-btn" class="ghost-btn">🏠 Домой</button>
+  </section>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
