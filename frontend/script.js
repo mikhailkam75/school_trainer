@@ -1,5 +1,3 @@
-const API = location.port === '3001' ? '' : 'http://localhost:3001';
-
 const state = {
   grade: null, subject: null, mode: null, topic: '',
   sessionId: crypto.randomUUID(),
@@ -77,6 +75,7 @@ $('start-btn').addEventListener('click', () => {
 async function loadQuestion() {
   const qz = state.quiz;
   qz.answered = false;
+  qz.retry = false;                       // FIX: явно сбрасываем флаг повтора при каждом запросе
   $('quiz-progress').textContent = `Вопрос ${qz.current} из ${qz.total}`;
   $('quiz-score').textContent = `⭐ ${qz.correct}`;
   $('progress-fill').style.width = ((qz.current - 1) / qz.total) * 100 + '%';
@@ -86,7 +85,7 @@ async function loadQuestion() {
   $('quiz-feedback').hidden = true;
   $('next-btn').hidden = true;
   try {
-    const res = await fetch(API + '/api/quiz', {
+    const res = await fetch('/api/quiz', {   // FIX: относительный путь вместо API + '/api/quiz'
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -96,7 +95,7 @@ async function loadQuestion() {
       }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || res.status);
+    if (!res.ok) throw new Error(data.error || String(res.status));
     qz.data = data;
     $('quiz-question').classList.remove('loading');
     $('quiz-question').textContent = data.question;
@@ -206,14 +205,14 @@ async function sendLearn() {
   const loading = addMsg('bot', 'Думаю…');
   loading.classList.add('loading');
   try {
-    const res = await fetch(API + '/api/learn', {
+    const res = await fetch('/api/learn', {   // FIX: относительный путь вместо API + '/api/learn'
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ classLevel: state.grade, subject: state.subject, question, sessionId: state.sessionId }),
     });
     const data = await res.json();
     loading.remove();
-    addMsg('bot', data.answer || ('Ошибка: ' + (data.error || res.status)));
+    addMsg('bot', data.answer || ('Ошибка: ' + (data.error || String(res.status))));
   } catch (e) {
     loading.remove();
     addMsg('bot', 'Не удалось связаться с сервером: ' + e.message);
